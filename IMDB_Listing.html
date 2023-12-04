@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMDb API Example</title>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <span>Listing Videos</span>
+    <!-- HTML Table to display API response -->
+    <table id="apiTable" border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Rank</th>
+                <th>Actors</th>
+                <th>Year</th>
+                <th>Period</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table body will be populated dynamically using jQuery -->
+        </tbody>
+    </table>
+
+    <script>
+        // API Call settings
+        const settings = {
+            async: true,
+            crossDomain: true,
+            url: 'https://imdb8.p.rapidapi.com/auto-complete?q=game%20of%20thr',
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'f1d19776a2mshf4c99bf55fd2689p1d9f3bjsnbe7788c515b4',
+                'X-RapidAPI-Host': 'imdb8.p.rapidapi.com'
+            }
+        };
+
+        // Make API call using jQuery AJAX
+        $.ajax(settings).done(function (response) {
+            // Log the response to the console
+            console.log(response);
+
+            // Function to populate the HTML table with API response
+            function populateTable(data) {
+                const tableBody = $('#apiTable tbody');
+
+                // Clear existing rows
+                tableBody.empty();
+
+                // Iterate through the response and append rows to the table
+                $.each(data.d, function (index, item) {
+                    const row = $('<tr>');
+                    row.append($('<td>').text(item.id));
+                    row.append($('<td>').text(item.q));
+                    row.append($('<td>').text(item.l));
+                    row.append($('<td>').text(item.rank));
+                    row.append($('<td>').text(item.s));
+                    row.append($('<td>').text(item.y));
+                    row.append($('<td>').text(item.yr));
+                    // Add more columns as needed
+
+                    // Append the row to the table body
+                    tableBody.append(row);
+                });
+            }
+
+            // Call the function to populate the table
+            populateTable(response);
+        });
+    </script>
+
+</body>
+</html>
